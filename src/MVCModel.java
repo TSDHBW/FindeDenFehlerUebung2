@@ -6,7 +6,8 @@ public class MVCModel {
     Zutatenverwaltung zutatenverwaltung;
 
     public MVCModel(){
-        init();
+
+        init; // () fehlt oder alternativ ein Datentyp
     }
 
     public void init(){
@@ -26,8 +27,8 @@ public class MVCModel {
 
             String zutat="";
             for (int i = 0; i < zutatenverwaltung.getIndex(); i++){
-                if (zutatenverwaltung.getZutaten()[i] != null){
-                    zutat = zutatenverwaltung.getZutaten()[i].getName() + ";" + zutatenverwaltung.getZutaten()[i].getPreis();
+                if (zutatenverwaltung.getZutaten()[i] != null;){ // ; zu viel
+                    zutat = zutatenverwaltung.getZutaten()[i].getName + ";" + zutatenverwaltung.getZutaten()[i].getPreis(); //() fehlt bei getName
                     bufferedWriterZutaten.write(zutat);
                     bufferedWriterZutaten.newLine();
                 }
@@ -35,31 +36,31 @@ public class MVCModel {
             bufferedWriterZutaten.close();
             String rezept="";
             String zutaten="";
-            for (int i = 0; i < rezeptverwaltung.getIndex() + 1; i++){
+            for (int i = 0; i < rezeptverwaltung.getIndex() + 1){ //; fehlt; i++ technisch nicht erforderlich, ohne entsteht eine Endlosschleife
                 if (rezeptverwaltung.getRezepte()[i] != null){
                     switch(rezeptverwaltung.getRezepte()[i].getTyp()){
                         case "Cocktail":
                             Cocktail cocktail = (Cocktail)rezeptverwaltung.getRezepte()[i];
-                            rezept = cocktail.getName() + ";" + cocktail.isHeißGetraenk() + ";"
+                            rezept = cocktail.name + ";" + cocktail.isHeißGetraenk() + ";" // cocktail.name nicht möglich, getName() erforderlich
                                     + cocktail.isZuckerfrei() + ";" + cocktail.getAlkohlgehalt() + ";" + cocktail.isAlkohlfrei() + ";"
                                     + cocktail.getTyp();
                             System.out.println("Cocktail gespeichert: " + rezept);
-                            break;
+                            break //; fehlt
                         case "Limonade":
                             Limonade Limonade = (Limonade)rezeptverwaltung.getRezepte()[i];
-                            rezept = Limonade.getName() + ";" + Limonade.isHeißGetraenk() + ";" + Limonade.isZuckerfrei() + ";"
-                                    + Limonade.getFruchtgeschmack() + ";" + Limonade.getHerstellungInHouse() + ";"
+                            rezept = Limonade.name + ";" + Limonade.isHeißGetraenk() + ";" + Limonade.isZuckerfrei() + ";" // cocktail.name nicht möglich, getName() erforderlich
+                                    + Limonade.getFruchtgeschmack() + ";" Limonade.getHerstellungInHouse() + ";" // + fehlt
                                     + Limonade.getTyp();
                             System.out.println("Limonade gespeichert " + rezept);
                             break;
                         case "FleischGericht":
-                            FleischGericht fleischGericht = (FleischGericht)rezeptverwaltung.getRezepte()[i];
+                            FleischGericht fleischGericht = (FleischGericht)rezeptverwaltung.getRezepte()[]; // Inhalt von [] fehlt. i naheliegend
                             rezept = fleischGericht.getName() + ";" + fleischGericht.isVegan() + ";" + fleischGericht.isVegetarisch() + ";"
                                     + fleischGericht.getFleischsorte() + ";" + fleischGericht.getZielKerntemperatur() + ";"
                                     + fleischGericht.getZubereitungstemperatur() + ";" + fleischGericht.getTyp();
-                            System.out.println("Fleischgericht gespeichert " + rezept);
+                            System.out.println("Fleischgericht gespeichert " rezept); // + fehlt
                             break;
-                        case "PastaGericht":
+                        case "PastaGericht" //: fehlt
                             PastaGericht pastaGericht = (PastaGericht)rezeptverwaltung.getRezepte()[i];
                             rezept = pastaGericht.getName() + ";" + pastaGericht.isVegan() + ";" + pastaGericht.isVegetarisch() + ";"
                                     + pastaGericht.getNudelsorte() + ";" + pastaGericht.isVorspeise() + ";"
@@ -72,20 +73,20 @@ public class MVCModel {
                     }
                     bufferedWriterRezepte.write(rezept);
                     bufferedWriterRezepte.newLine();
-                    for (int j = 0; j < rezeptverwaltung.getRezepte()[i].getZutaten().length; j++){
+                    for (int j; j < rezeptverwaltung.getRezepte()[i].getZutaten().length; j++){ // j nicht initialisiert
                         if (rezeptverwaltung.getRezepte()[i].getZutaten()[j] != null) {
                             zutaten = zutaten + rezeptverwaltung.getRezepte()[i].getZutaten()[j].getName() + ";";
                         }
                     }
-                    bufferedWriterRezepte.write(zutaten);
-                    bufferedWriterRezepte.newLine();
+                    write(zutaten); //Objekt fehlt --> bufferedWriterRezept
+                    newLine(); //Objekt fehlt --> bufferedWriterRezept
                     zutaten = "";
                 }
             }
             bufferedWriterRezepte.close();
-        } catch (FileNotFoundException e){
-            System.out.println("Datei nicht gefunden");
         } catch (IOException e){
+            System.out.println("Datei nicht gefunden");
+        } catch (FileNotFoundException e){ //Exception kann nicht erreicht werden. Muss vor IOException, da FileNotFound von IOException erbt
             System.out.println(e.getMessage());
         }
     }
